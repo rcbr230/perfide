@@ -274,7 +274,7 @@ GameObject:
   - component: {fileID: 455402568}
   - component: {fileID: 455402567}
   m_Layer: 0
-  m_Name: GameController
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -293,6 +293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 2057902128}
+  GameTicks: 0
 --- !u!4 &455402568
 Transform:
   m_ObjectHideFlags: 0
@@ -988,7 +989,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd4b5d1337ac7404c9cb879e54cd4130, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shot: {fileID: 8084479002818728937, guid: f0008fff8ffb56546813631aeaf1221b, type: 3}
+  shot: {fileID: 7922013107643596997, guid: f0008fff8ffb56546813631aeaf1221b, type: 3}
   attackDelay: 1
   movementDelay: 0.2
 --- !u!1660057539 &9223372036854775807

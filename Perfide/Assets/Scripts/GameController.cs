@@ -8,7 +8,8 @@ public class GameController : MonoBehaviour
 
     private bool playerMoved;
     private Vector2 prevPosition;
-    private int GameTicks = 0;
+    public int GameTicks = 0;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,6 +22,7 @@ public class GameController : MonoBehaviour
         // on player move, update game ticker, and perform environment actions
         Vector2 currentPlayerPos = Player.GetComponent<Transform>().position;
         if(currentPlayerPos != prevPosition){
+            prevPosition = currentPlayerPos;
             GameTicks += 1;
             // run steps for environment
         }

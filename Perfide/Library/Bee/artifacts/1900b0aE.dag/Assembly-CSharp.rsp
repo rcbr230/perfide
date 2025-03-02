@@ -440,6 +440,8 @@
 -analyzer:"D:/Unity/6000.0.35f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
 -analyzer:"D:/Unity/6000.0.35f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 -analyzer:"D:/Unity/6000.0.35f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.UIToolkit.SourceGenerator.dll"
+"Assets/Scripts/Bullet.cs"
+"Assets/Scripts/EnvironmentEntity.cs"
 "Assets/Scripts/GameController.cs"
 "Assets/Scripts/PCController.cs"
 -langversion:9.0
