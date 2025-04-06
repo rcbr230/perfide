@@ -18,8 +18,7 @@ public class Bullet : EnvironmentEntity
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        gameManager = GameObject.Find("GameManager");
-        PrevStep = gameManager.GetComponent<GameController>().GameTicks;
+        createBaseStats();
 
         // assign direction
         switch(this.transform.rotation.eulerAngles.z){
@@ -45,11 +44,21 @@ public class Bullet : EnvironmentEntity
         if (checkGameTick()){
             stepForward();
         }
-        if(checkToDestroy()){
+        RaycastHit hit = checkToDestroy();
+        if(hit.transform != null){
+            DestroyOtherEntity(hit);
             Destroy(this.gameObject);
         }
     }
 
+    // destroy other entity hit if it's a valid obj
+    void DestroyOtherEntity(RaycastHit hit){
+        switch(LayerMask.LayerToName(hit.transform.gameObject.layer)){
+            case "Enemy":
+                Destroy(hit.transform.gameObject);
+                break;
+        }
+    }
     // move shot in direction it is facing
     void stepForward(){
         float x = this.transform.position.x;
@@ -72,22 +81,22 @@ public class Bullet : EnvironmentEntity
         }
     }
 
-    bool checkToDestroy(){
-        bool objFound = false;
+    RaycastHit checkToDestroy(){
+        RaycastHit hit = new RaycastHit();
         switch(dir){
             case Direction.UP:
-                objFound = Physics.Raycast(this.transform.position, Vector2.up, 0.5f);
+                Physics.Raycast(this.transform.position, Vector2.up, out hit, 0.5f);
                 break;
             case Direction.DOWN:
-                objFound = Physics.Raycast(this.transform.position, -Vector2.up, 0.5f);
+                Physics.Raycast(this.transform.position, -Vector2.up, out hit, 0.5f);
                 break;
             case Direction.LEFT:
-                objFound = Physics.Raycast(this.transform.position, -Vector2.right, 0.5f);
+                Physics.Raycast(this.transform.position, -Vector2.right, out hit, 0.5f);
                 break;
             case Direction.RIGHT:
-                objFound = Physics.Raycast(this.transform.position, Vector2.right, 0.5f);
+                Physics.Raycast(this.transform.position, Vector2.right, out hit, 0.5f);
                 break;
         }
-    return objFound;
+        return hit;
     }
 }

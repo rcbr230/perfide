@@ -14,4 +14,9 @@ public class EnvironmentEntity : MonoBehaviour
         }
         return false;
     }
+
+    protected void createBaseStats(){
+        gameManager = GameObject.Find("GameManager");
+        PrevStep = gameManager.GetComponent<GameController>().GameTicks;
+    }
 }
