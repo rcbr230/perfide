@@ -97,34 +97,34 @@ public class PCController : MonoBehaviour
     */
     bool CheckMovement(){
         if(Input.GetKey(KeyCode.W)){
-            if(isWall(Direction.UP)){
+            Facing = Direction.UP;
+            if(IsWall(Direction.UP)){
                 return false;
             }
-            Facing = Direction.UP;
             playerTransform.position = new Vector3(playerTransform.position.x, playerTransform.position.y + 1);
             return true;
         }
         if(Input.GetKey(KeyCode.S)){
-            if(isWall(Direction.DOWN)){
+            Facing = Direction.DOWN;
+            if(IsWall(Direction.DOWN)){
                 return false;
             }
-            Facing = Direction.DOWN;
             playerTransform.position = new Vector3(playerTransform.position.x, playerTransform.position.y - 1);
             return true;
         }
         if(Input.GetKey(KeyCode.A)){
-            if(isWall(Direction.LEFT)){
+            Facing = Direction.LEFT;
+            if(IsWall(Direction.LEFT)){
                 return false;
             }
-            Facing = Direction.LEFT;
             playerTransform.position = new Vector3(playerTransform.position.x - 1, playerTransform.position.y);
             return true;
         }
         if(Input.GetKey(KeyCode.D)){
-            if(isWall(Direction.RIGHT)){
+            Facing = Direction.RIGHT;
+            if(IsWall(Direction.RIGHT)){
                 return false;
             }
-            Facing = Direction.RIGHT;
             playerTransform.position = new Vector3(playerTransform.position.x + 1, playerTransform.position.y);
             return true;
         }
@@ -135,29 +135,57 @@ public class PCController : MonoBehaviour
     * Use raycast to check if there is something in the way of the user
     * dir is an enumerator: 0-up 1-down 2-left 3-right
     */
-    bool isWall(Direction dir){
+    bool IsWall(Direction dir){
+        RaycastHit hit;
         switch (dir){
             // up
             case Direction.UP:
-                if(Physics.Raycast(playerTransform.position, playerTransform.up, 1.0f)){
+                if(Physics.Raycast(playerTransform.position, playerTransform.up, out hit, 1.0f) && !MoveObj(hit)){
                     return true;
                 }
                 break;
             case Direction.DOWN:
-                if(Physics.Raycast(playerTransform.position, -playerTransform.up, 1.0f)){
+                if(Physics.Raycast(playerTransform.position, -playerTransform.up, out hit, 1.0f) && !MoveObj(hit)){
                     return true;
                 }
                 break;
             case Direction.LEFT:
-                if(Physics.Raycast(playerTransform.position, -playerTransform.right, 1.0f)){
+                if(Physics.Raycast(playerTransform.position, -playerTransform.right, out hit, 1.0f) && !MoveObj(hit)){
                     return true;
                 }
                 break;
             case Direction.RIGHT:
-                if(Physics.Raycast(playerTransform.position, playerTransform.right, 1.0f)){
+                if(Physics.Raycast(playerTransform.position, playerTransform.right, out hit, 1.0f) && !MoveObj(hit)){
                     return true;
                 }
                 break;
+        }
+        return false;
+    }
+
+    // check if an obj is infront of player and move the object when you can.
+    bool MoveObj(RaycastHit hit){
+        LayerMask moveLayer = LayerMask.NameToLayer("Moveable");
+        if(LayerMask.NameToLayer("Moveable") == hit.transform.gameObject.layer){
+            GameObject moveObj = hit.transform.parent.gameObject;
+            switch(Facing){
+                case Direction.UP:
+                    moveObj.transform.position += new Vector3(0.0f, 1.0f, 0.0f);
+                    break;
+                case Direction.DOWN:
+                    moveObj.transform.position += new Vector3(0.0f, -1.0f, 0.0f);
+                    break;
+                case Direction.LEFT:
+                    moveObj.transform.position += new Vector3(-1.0f, 0.0f, 0.0f);
+                    break;
+                case Direction.RIGHT:
+                    if(Physics.Raycast(new Ray(this.transform.position, Vector3.right), 2f, ~moveLayer)){
+                        return false;
+                    }
+                    moveObj.transform.position += new Vector3(1.0f, 0.0f, 0.0f);
+                    break;
+            }
+            return true;
         }
         return false;
     }

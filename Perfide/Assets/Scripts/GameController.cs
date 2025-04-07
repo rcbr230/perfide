@@ -1,11 +1,11 @@
+using UnityEditor.SearchService;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
 
-    // public variables
-    public GameObject Player; 
-
+    private GameObject Player; 
+    private GameObject exit;
     private bool playerMoved;
     private Vector2 prevPosition;
     public int GameTicks = 0;
@@ -13,6 +13,8 @@ public class GameController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Player = GameObject.Find("Player");
+        exit = GameObject.Find("Exit");
         prevPosition = Player.GetComponent<Transform>().position;
     }
 
@@ -26,5 +28,20 @@ public class GameController : MonoBehaviour
             GameTicks += 1;
             // run steps for environment
         }
+
+        if(CheckPlayerExit()){
+            // end game/round
+            Debug.Log("END GAME");
+        }
+    }
+
+    bool CheckPlayerExit(){
+        int xOffset = (int)Player.transform.position.x - (int)exit.transform.position.x;
+        int yOffset = (int)Player.transform.position.y - (int)exit.transform.position.y;
+        int checkVal = xOffset + yOffset;
+        if(checkVal == 0){
+            return true;
+        }
+        return false;
     }
 }
